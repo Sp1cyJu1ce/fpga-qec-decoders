@@ -138,8 +138,8 @@ A distance-33 resident worker with three spatial lanes passed internal timing at
 100 MHz on a VP1902. Three unpaused, preloaded simulations each took 2,180 cycles,
 or 21.8 microseconds from accepted start to the last result write. Input loading,
 external readback and global decoding were outside that interval. The original
-250 MHz target failed. The original and revised VU13P resident attempts failed
-routing.
+250 MHz target failed. Both direct and simplified memory-addressing implementations failed
+routing on VU13P.
 
 One distance-33 distributed interior worker and its queues passed internal
 timing on a VU13P at 62.5 MHz for the worker and 100 MHz for the fabric side. This

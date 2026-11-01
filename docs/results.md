@@ -24,7 +24,7 @@ The 2D configuration lists tap lanes in the three layers. In 3D, T16 and T32 den
 
 ## Distributed 2D simulation
 
-The expanded study covered 47 nonempty combinations of code distance and worker count. It used distances 3, 5, 7, 9, 13, 17, 21, 25, 33, 41, 49 and 65, with one, four, sixteen or sixty-four workers where the partition was nonempty. The functional checks compare every owned intermediate value and final decision with the undivided integer calculation.
+The study covered 47 nonempty combinations of code distance and worker count. It used distances 3, 5, 7, 9, 13, 17, 21, 25, 33, 41, 49 and 65, with one, four, sixteen or sixty-four workers where the partition was nonempty. The functional checks compare every owned intermediate value and final decision with the undivided integer calculation.
 
 ![Owned output regions and simulated completion under two communication budgets](assets/distributed-results.png)
 
@@ -51,12 +51,11 @@ Vivado implementation was also attempted for selected complete components. Two r
 
 | Component | Device | Checked internal clock | Setup margin | Hold margin |
 |---|---|---:|---:|---:|
-| Original 2D resident worker, distance 33 | VU13P | Routing failed | — | — |
-| Revised 2D resident worker, distance 33 | VU13P | Routing failed | — | — |
+| 2D resident worker, distance 33, direct and simplified memory addressing | VU13P | Neither routed | — | — |
 | One interior distributed worker, distance 33 | VU13P | 62.5 MHz worker / 100 MHz fabric | +2.682 / +5.024 ns | +0.010 / +0.045 ns |
 | Finite 3D core, distance 5, T64 | VU13P | 100 MHz | +0.170 ns | +0.011 ns |
 | Finite 3D core, distance 49, T64 | VP1802 | 83⅓ MHz | +0.907 ns | +0.012 ns |
-| Revised 2D resident worker, distance 33, three spatial lanes | VP1902 | 100 MHz | +1.415 ns | +0.010 ns |
+| 2D resident worker, distance 33, three spatial lanes | VP1902 | 100 MHz | +1.415 ns | +0.010 ns |
 
 The original clock targets failed setup where routing succeeded. The slower clocks were checked on the unchanged routed circuits. For example, the VP1902 resident worker failed its initial 250 MHz target by 4.587 ns before passing internal timing at 100 MHz.
 
@@ -68,6 +67,6 @@ The distance-49 3D core stores complete finite volumes in UltraRAM. Its 30,438,8
 
 ## What these results do not claim
 
-Correct integer arithmetic does not by itself establish successful quantum error correction. Decoder quality is evaluated separately in the thesis using shared simulated faults and retained quantum-device records. Likewise, a fast neural core does not include the time to construct the residual, run the global decoder and deliver a correction to a controller.
+Correct integer arithmetic does not by itself establish successful quantum error correction. Decoder quality is evaluated separately in the thesis using shared simulated faults and quantum-device records. Likewise, a fast neural core does not include the time to construct the residual, run the global decoder and deliver a correction to a controller.
 
 The remaining system work includes physical high-end board tests, real inter-board links, sustained input handling and an accessible quantum-controller feedback interface. The repository's small examples check that the packaged sources remain usable; they do not repeat the complete thesis evaluation.

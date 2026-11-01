@@ -38,6 +38,14 @@ apikey.json
 *.key
 credentials*.json
 secrets*.json
+qiskit-ibm.json
+experiment.json
+measurements.npz
+*.qpy
+/local-data/
+/local-results/
+/results/*.json
+/results/*.json.tmp
 
 # Checkpoints are not needed by the integer HDL examples.
 *.keras

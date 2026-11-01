@@ -1,4 +1,6 @@
-# 3D integer coefficients
+# 3D model parameters
+
+`float_parameters.npz` contains the original PyTorch state-dictionary arrays. `integer_parameters.npz` contains the same integer weights, biases and requantisation values as the packed HDL files, unpacked into output-channel, input-channel, time, row, column order. The software reference loads arrays with `allow_pickle=False`; neither archive contains training objects or account metadata.
 
 The `t32` folder contains the tested integer export for the network described by Gicev, Hollenberg and Usman, [*Fully convolutional 3D neural network decoders for surface codes with syndrome circuit noise*](https://arxiv.org/abs/2506.16113v1). The thesis uses this version's model and circuit description. These are existing learned coefficients, not a newly trained model.
 

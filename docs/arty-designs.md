@@ -91,3 +91,16 @@ Both harnesses use 8N1 at approximately 115200 baud. Send ASCII `S`, the complet
 | Reply trailer | `0x5A` | `0x5A` |
 
 The returned counter covers core computation after input loading. It excludes serial transfer, global cleanup and any quantum-controller response. The UART has no CRC, flow control or explicit framing-error report; it is a simple laboratory interface.
+
+## Check a programmed board
+
+The host checker sends the included input and compares every returned prediction with its expected integer result:
+
+```sh
+python -m pip install -r requirements-hardware.txt
+python scripts/check_board.py 2d --port COM5 --distance 5 --expected-cycles 4377 --clock-mhz 100 --repeats 10 --output build/board-check.json
+```
+
+Use the port assigned to your board and the clock/cycle count for the bitstream actually programmed. The script does not program the FPGA. `--input` and `--expected` select other HEX fixtures; `3d` selects the space-time UART format. It checks framing, exact payload lengths, every prediction, unused padding bits and optional expected cycle counts. The reported microseconds come from the counter and the clock supplied on the command line.
+
+The UART packing can be checked offline with `python -m unittest discover -s tests -p test_board_protocol.py -v`.

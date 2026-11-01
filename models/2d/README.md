@@ -1,4 +1,6 @@
-# 2D integer coefficients
+# 2D model parameters
+
+`float_parameters.npz` contains the original floating-point weights and biases in output-channel, input-channel, kernel-row, kernel-column order. The software reference loads this array-only export without Keras or pickle. It is the same trained network used to derive the integer coefficients below.
 
 These six files hold the fixed coefficients used by the 2D RTL. The model follows Gicev, Hollenberg and Usman, [*A scalable and fast artificial neural network syndrome decoder for surface codes*](https://doi.org/10.22331/q-2023-07-12-1058). They are existing trained coefficients, not a new model trained for this repository.
 

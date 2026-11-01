@@ -1,0 +1,4 @@
+logical_layer,cin,cout,input_bits,accumulator_bits,output_bits,terms_per_output,sample_to_output_cycles,steady_state_initiation_interval_cycles,part,lut_sites,fabric_ff,dsp_blocks,period_constraint_ns,register_slack_ns,routed,full_decoder
+1,4,9,1,16,11,484,11,1,xc7a200tffg1156-3,23060,32418,0,4,0.886,False,False
+2,9,9,11,24,21,1089,13,1,xc7a200tffg1156-3,152450,208345,0,4,0.408,False,False
+3,9,2,21,36,1,1089,13,1,xc7a200tffg1156-3,86406,122573,0,4,0.221,False,False

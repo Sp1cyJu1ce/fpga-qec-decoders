@@ -1,6 +1,6 @@
 # FPGA neural decoders for quantum error correction
 
-Verilog and SystemVerilog implementations from my Master of Computer Science thesis at the University of Melbourne: **Resource-Constrained FPGA Implementations of Surface-Code Neural Decoders: Verification, Experimental Evaluation and Scalable Integration**.
+Verilog, SystemVerilog and Python code from my Master of Computer Science thesis at the University of Melbourne: **Resource-Constrained FPGA Implementations of Surface-Code Neural Decoders: Verification, Experimental Evaluation and Scalable Integration**.
 
 The project asks how a neural decoder can fit on an FPGA, how much parallel computation helps, and what changes when the calculation is divided across several devices. It includes the 2D and 3D designs tested on an Arty A7-100T, together with larger resident and distributed designs used in simulation.
 
@@ -15,9 +15,11 @@ The board used for the hardware experiments. [Short demonstration clip](docs/ass
 - [Arty designs and build instructions](docs/arty-designs.md): memory-based 2D and 3D cores, board interfaces and small simulation examples.
 - [Resident and distributed designs](docs/scalable-designs.md): overlapping layers, tile ownership and simulated communication.
 - [Results and their scope](docs/results.md): board measurements, simulated completion times and internal timing checks on larger devices.
+- [Quantum experiments and decoder comparisons](docs/quantum-experiments.md): IBM circuits, saved-data decoding, CNN/HDRG/MWPM simulations, pruning and decay fits.
+- [Architecture estimates](docs/architecture-model.md): resource and communication models for larger FPGA systems.
 - [Model and source attribution](ATTRIBUTION.md): the research behind the networks and the included coefficient files.
 
-The small examples exercise the packaged HDL without an FPGA board. Use Python 3.10 or later. The Python launchers use the standard library and stage their inputs under `build/`.
+The small examples exercise the packaged HDL without an FPGA board. The HDL launchers use Python 3.10 or later and the standard library, and stage inputs under `build/`. The software decoder package has separate dependencies listed in its guide.
 
 With Vivado's simulator on `PATH`:
 
@@ -60,16 +62,28 @@ flowchart LR
     E --> F[Correction or Pauli-frame update]
 ```
 
-The neural core is the hardware contribution packaged here. The full pipeline is discussed in the thesis.
+The Python package implements input encoding, residual construction and global decoding for offline comparisons. IBM measurements are collected and decoded separately. The repository does not claim a live FPGA-to-QPU feedback demonstration.
+
+For a small software comparison:
+
+```sh
+python -m pip install -r requirements-analysis.txt
+python -m qec.simulate_2d --distances 3 5 --shots 128 --output build/spatial
+python -m unittest discover -s tests -p test_qec.py -v
+```
+
+The IBM circuit commands build locally unless `--submit` is explicitly supplied. Credentials and measurement files stay outside the published source.
 
 ## Repository layout
 
 ```text
 rtl/          Convolution engines, memories and worker control
 boards/       Arty top-level modules and pin/clock constraints
-models/       Integer coefficient files needed by the examples
+models/       Floating-point and integer model parameters
+qec/          Geometry, software decoders, IBM circuits and analysis
 examples/     Small inputs, expected outputs and testbenches
 scripts/      Portable simulation and build entry points
+tests/        Offline numerical, circuit and board-protocol checks
 targets/      Selected larger-device components and constraints
 results/      Selected thesis results in CSV form
 docs/         Design notes, results and figures
@@ -81,7 +95,7 @@ The resident and distributed folders contain some identically named modules with
 
 More parallel workers help when there is enough communication capacity to feed them. With a fixed total bandwidth, extra workers can exchange so much overlapping data that completion becomes slower. Memory layout, arithmetic, clock timing and communication therefore have to be considered together.
 
-The repository distinguishes physical board measurements, digital simulations and internal implementation timing. A passing simulation is not a physical multi-board demonstration. The small packaged tests are convenient examples, not replacements for the thesis's full experimental campaigns.
+The repository distinguishes physical board measurements, digital simulations and internal implementation timing. A passing simulation is not a physical multi-board demonstration. The small packaged tests are convenient examples, not replacements for the thesis's full experiments.
 
 ## Attribution and citation
 
