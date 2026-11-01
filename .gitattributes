@@ -1,0 +1,14 @@
+* text=auto eol=lf
+*.v text eol=lf
+*.sv text eol=lf
+*.tcl text eol=lf
+*.xdc text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.hex text eol=lf
+*.csv text eol=lf
+*.cff text eol=lf
+*.png binary
+*.jpg binary
+*.mp4 binary
+rtl/hardwired_2d/*.v linguist-generated=true

@@ -1,0 +1,50 @@
+# Reproducible outputs stay outside the source tree.
+/build/
+**/__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Vivado projects, compiled simulations and waveforms.
+.Xil/
+*.cache/
+*.gen/
+*.runs/
+*.sim/
+*.srcs/
+*.xpr
+*.dcp
+*.bit
+*.bin
+*.jou
+*.log
+*.pb
+*.wdb
+*.vcd
+*.fst
+*.vvp
+xsim.dir/
+obj_dir/
+
+# Machine settings and credentials never belong in this repository.
+.vscode/
+.idea/
+.env
+.env.*
+apikey.json
+**/apikey.json
+*.lic
+*.pem
+*.key
+credentials*.json
+secrets*.json
+
+# Checkpoints are not needed by the integer HDL examples.
+*.keras
+*.pth
+*.pt
+*.h5
+*.zip
+
+.DS_Store
+Thumbs.db

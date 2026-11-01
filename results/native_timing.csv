@@ -1,0 +1,8 @@
+thesis_case,component,part,distance,resource_stage,lut,flip_flops,bram36_equivalent,uram_blocks,dsp,status,clock_domain,checked_period_ns,setup_margin_ns,hold_margin_ns,pulse_width_margin_ns
+H1,"Complete resident 2D worker, original address expression",xcvu13p-flga2577-3-e,33,synthesis,920370,1234530,78,0,0,routing_failed,,,,,
+H2,Complete single distributed endpoint and two asynchronous FIFOs,xcvu13p-flga2577-3-e,33,routed,327752,435683,16.5,0,0,internal_timing_pass,core_clk,16.0,2.682,0.01,7.505
+H2,Complete single distributed endpoint and two asynchronous FIFOs,xcvu13p-flga2577-3-e,33,routed,327752,435683,16.5,0,0,internal_timing_pass,fabric_clk,10.0,5.024,0.045,4.532
+H3,"Complete resident 2D worker, constant-offset address variant",xcvu13p-flga2577-3-e,33,synthesis,914866,1234835,78,0,0,routing_failed,,,,,
+H4,Complete elastic finite-volume 3D CNN core,xcvu13p-flga2577-3-e,5,routed,113663,36742,97.5,0,3,internal_timing_pass,worker_clk,10.0,0.17,0.011,4.505
+H5,Complete elastic finite-volume 3D CNN core,xcvp1802-lsvc4072-3HP-e-S,49,routed,119136,34603,97,780,13,internal_timing_pass,worker_clk,12.0,0.907,0.012,5.461
+H6,"Complete resident 2D worker, constant-offset address variant",xcvp1902-vsvb6865-3HP-e-S,33,routed,831868,1119681,102,0,0,internal_timing_pass,worker_clk,10.0,1.415,0.01,4.427
