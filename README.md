@@ -37,6 +37,8 @@ python scripts/simulate_scalable.py resident
 
 The 2D Arty check does not require Vivado. The 3D Arty check uses Vivado's simulator.
 
+With NumPy installed, `python scripts/simulate_distances.py` checks fresh deterministic inputs at distances 5, 9, 17 and 33 using Icarus and an independent integer reference. It also checks the expected core cycle counts. The [example guide](examples/arty_2d_distances/README.md) explains the configurations.
+
 The distributed example uses Verilator, CMake and a C++20 compiler:
 
 ```sh
@@ -70,12 +72,12 @@ The Python package implements input encoding, residual construction and global d
 For a small software comparison:
 
 ```sh
-python -m pip install -r requirements-analysis.txt
+python -m pip install -r requirements-core.txt
 python -m qec.simulate_2d --distances 3 5 --shots 128 --output build/spatial
 python -m unittest discover -s tests -p test_qec.py -v
 ```
 
-The IBM circuit commands build locally unless `--submit` is explicitly supplied. Credentials and measurement files stay outside the published source.
+For 3D neural inference, install `requirements-cnn.txt`. IBM circuit construction and submission use `requirements-ibm.txt`. Install `requirements-analysis.txt` if you need both. The IBM circuit commands build locally unless `--submit` is explicitly supplied. Credentials and measurement files stay outside the published source.
 
 ## Repository layout
 

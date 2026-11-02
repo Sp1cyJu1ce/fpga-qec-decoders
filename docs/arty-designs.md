@@ -30,6 +30,10 @@ The hidden layers retain 11-bit and 21-bit nonnegative activations. Raw sums use
 
 Each layer has its own issue counter. A consumer waits until the preceding layer has written every location needed for its next output. Computation can therefore overlap across layers without reading unwritten data.
 
+![Cycle formula divided into lead-in, middle sweep, drain and pipeline terms](assets/cycle-budget.png)
+
+*Bars show the share of the core-cycle formula, with total cycles at the right. These terms describe an overlapping schedule, not separate measurements of layer activity. The middle sweep accounts for about 89% of the distance-33 total. The 11/4/4 row is an earlier measured configuration included for comparison; the packaged fixture uses 11/4/6.*
+
 ## Three-dimensional core
 
 The finite input shape is `(d+1) × ((d+3)/2) × ((d+3)/2)` with twelve binary channels. At distance five this is six time planes of 4 by 4 locations: 96 input words. This encoded tensor layout is not a direct drawing of 96 physical qubits.

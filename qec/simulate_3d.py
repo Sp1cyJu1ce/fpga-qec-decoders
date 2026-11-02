@@ -8,10 +8,8 @@ import time
 import numpy as np
 import pymatching
 import stim
-import torch
 from scipy.stats import beta
 from .memory import Geometry3D, memory_circuit, space_time_syndrome
-from .networks import configure, FloatCNN, IntegerCNN
 from .io import sha, write, protocol
 
 
@@ -89,6 +87,8 @@ def circuit_for(cfg):
 
 
 def run(cfg, out, engines):
+    import torch
+
     name = f"{cfg['noise']}_d{cfg['d']:02d}_{cfg['basis']}_r{cfg['rounds']}_p{round(cfg['pprime']*1e6):06d}"
     out.mkdir(parents=True, exist_ok=True)
     target = out / (name + ".json")
@@ -280,6 +280,8 @@ def main():
         or args.seed < 0
     ):
         parser.error("Counts must be positive and the seed nonnegative.")
+    from .networks import configure, FloatCNN, IntegerCNN
+
     configure(args.device, args.threads)
     settings = vars(args).copy()
     settings.pop("output")

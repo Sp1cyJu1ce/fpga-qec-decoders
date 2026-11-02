@@ -9,7 +9,7 @@ python -m pip install -r requirements-analysis.txt
 python -m unittest discover -s tests -p test_qec.py -v
 ```
 
-The requirements record the versions tested for this package. CPU execution is the default. A CUDA-compatible PyTorch installation is optional for larger simulations. No IBM account is opened when importing the numerical modules or running the tests.
+The requirements record the versions tested for this package. For 2D comparisons alone, use `requirements-core.txt`. `requirements-cnn.txt` adds PyTorch for 3D neural inference, and `requirements-ibm.txt` adds Qiskit for circuit construction and submission. The full analysis file installs both. CPU execution is the default. A CUDA-compatible PyTorch installation is optional for larger simulations. No IBM account is opened when importing the numerical modules or running the tests.
 
 ## Decoder comparisons
 
@@ -84,6 +84,10 @@ python -m qec.import_ibm memory --input local-data/memory-exports --output local
 The idle importer reads `raw_bits_2d.npz` and `tab10_1_configs.csv`. It includes the distance-five to eight final-readout diagnostic. The memory importer reads `raw_bits_3d.npz` and `submit_manifest_3d.json`. Each creates numbered condition folders for `decode_ibm`. Only required settings and arrays are copied. The measurement archives themselves are not included in this source repository.
 
 For no-reset memory, consecutive raw ancilla measurements must first be XORed to recover check values. Differences between those check values form the detectors. The circuit mirror models ancilla readout noise as a state flip before measurement. A purely classical readout misreport would propagate differently and is not the same noise model. The tests compare the conversion with Stim's measurement-to-detector conversion for both bases and several preparations.
+
+![Five-round examples of check values, raw readouts and detection events](assets/detector-rules.png)
+
+*Each example starts with one known-zero check and a zero ancilla. A persistent data error changes the check once. An isolated classical recording error produces two detection events: one round apart with reset, or two apart without reset. This recording error is distinct from a physical state flip before measurement. The circuit determines which boundary checks are known.*
 
 ## Additional experiments
 

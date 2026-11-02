@@ -47,8 +47,11 @@ def run(command, output, log_name, timeout, environment):
 
 
 def require_pass(result, design):
-    marker = f"SMOKE_PASS {design} d=5 cycles="
-    if (not any(line.startswith(marker) for line in result.splitlines())
+    markers = {
+        "2d": "SMOKE_PASS 2d d=5 cycles=4377 raw_values=1620 activations_and_decisions=1620",
+        "3d": "SMOKE_PASS 3d d=5 tco=32 cycles=223603 raw_values=38016 activations_and_decisions=38016",
+    }
+    if (markers[design] not in result.splitlines()
             or "FATAL:" in result.upper() or "ERROR:" in result.upper()):
         raise RuntimeError("Simulation did not report a clean fixture pass")
 

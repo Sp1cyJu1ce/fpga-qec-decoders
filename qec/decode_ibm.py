@@ -9,7 +9,6 @@ from .spatial import Geometry, FFTReference, mwpm, summary_flags
 from .hdrg import SurfaceHDRG, HDRGDecoder
 from .hdrg_fast import FastSurfaceHDRG
 from .memory import Geometry3D, space_time_syndrome
-from .networks import configure, FloatCNN, IntegerCNN
 from . import ibm_memory
 from .io import sha, write, protocol
 
@@ -146,6 +145,9 @@ def decode_idle(config, raw, passes=1, batch=32, precision="integer"):
 
 
 def decode_memory(manifest, raw, passes=1, batch=8, precision="integer", device="cpu"):
+    from .networks import configure, FloatCNN, IntegerCNN
+
+    configure(device, 2)
     config = manifest["configuration"]
     ibm_memory.configure_manifest({"medians": manifest["medians"], "configs": [config]})
     volumes, truth = ibm_memory.unwrap_extract(raw["raw"], config)
@@ -241,7 +243,6 @@ def main():
         "device": args.device,
     }
     record = protocol(args.output, settings)
-    configure(args.device, 2)
     with np.load(data_path, allow_pickle=False) as raw:
         if manifest["experiment"] == "idle":
             values = decode_idle(

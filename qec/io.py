@@ -32,6 +32,13 @@ def write(path, value):
 
 
 def protocol(output, settings):
+    def installed_version(name):
+        try:
+            return importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            # CPU 2D runs do not need Torch. Record its absence in the protocol.
+            return None
+
     root = Path(__file__).resolve().parents[1]
     sources = (
         list((root / "qec").glob("*.py"))
@@ -46,7 +53,7 @@ def protocol(output, settings):
         "software": {
             "python": platform.python_version(),
             **{
-                name: importlib.metadata.version(name)
+                name: installed_version(name)
                 for name in ["numpy", "scipy", "torch", "stim", "pymatching"]
             },
         },

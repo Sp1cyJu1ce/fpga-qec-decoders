@@ -22,6 +22,8 @@ The 2D configuration lists tap lanes in the three layers. In 3D, T16 and T32 den
 
 [Board result CSV](../results/board_results.csv)
 
+The thesis also reports an earlier shared-schedule 2D baseline of 22,632 board cycles. The retained source simulates in 22,630 cycles. The saved artifacts do not establish the cause of that two-cycle difference, so it remains identified separately rather than treated as an exact agreement.
+
 ## Distributed 2D simulation
 
 The study covered 47 nonempty combinations of code distance and worker count. It used distances 3, 5, 7, 9, 13, 17, 21, 25, 33, 41, 49 and 65, with one, four, sixteen or sixty-four workers where the partition was nonempty. The functional checks compare every owned intermediate value and final decision with the undivided integer calculation.

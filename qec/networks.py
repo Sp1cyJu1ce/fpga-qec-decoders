@@ -5,7 +5,15 @@ from pathlib import Path
 import os
 import re
 import numpy as np
-import torch
+try:
+    import torch
+except ModuleNotFoundError as error:
+    if error.name != "torch":
+        raise
+    raise ModuleNotFoundError(
+        "CNN inference requires Torch. Install requirements-cnn.txt first.",
+        name="torch",
+    ) from error
 import torch.nn.functional as F
 
 ROOT = Path(__file__).resolve().parents[1]

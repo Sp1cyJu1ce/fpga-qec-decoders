@@ -184,10 +184,10 @@ def unwrap_extract(raw, cfg, slots=None):
     return x, obs
 
 
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
-
-
 def build_circuit(cfg, nq, q_of):
+    # Offline reconstruction uses Stim; Qiskit is needed only to build a circuit.
+    from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+
     d, R, basis = cfg["d"], cfg["rounds"], cfg["basis"]
     anc, data, nbits = creg_layout(d, R)
     data_q = [q_of[(2 * i, 2 * j)] for (i, j) in data]

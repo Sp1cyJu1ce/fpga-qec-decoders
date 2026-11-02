@@ -48,9 +48,10 @@ class HDRGDecoder:
         self.max_delta = max(1.0, extent, float(np.max(finite, initial=0)))
 
     def decode(self, syndrome, trace=False):
-        syndrome = np.asarray(syndrome, dtype=np.uint8)
-        if syndrome.shape != (len(self.coords),) or np.any(syndrome > 1):
+        syndrome = np.asarray(syndrome)
+        if syndrome.shape != (len(self.coords),) or not np.isin(syndrome, (0, 1)).all():
             raise ValueError("Expected one binary syndrome vector")
+        syndrome = syndrome.astype(np.uint8, copy=False)
         active = np.flatnonzero(syndrome)
         correction = np.zeros(self.n_faults, np.uint8)
         delta = 1

@@ -1,0 +1,6 @@
+# Tested with Python 3.15.2. Enough for the 2D comparisons and core tests.
+numpy>=2.5.4,<3
+scipy>=1.18.1,<2
+stim>=1.16.0,<2
+pymatching>=2.4.0,<3
+numba>=0.68.1,<1
