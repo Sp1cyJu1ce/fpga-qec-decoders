@@ -1,0 +1,7 @@
+distance,map_width,workers,queue_depth_records,record_bits,queue_storage_bits_per_worker,added_storage_bits_per_worker,port_ceiling_gbps_each_direction,frames,completion_us
+9,17,1,4,320,2560,0,32,6,72.18
+9,17,1,8,320,5120,2560,32,6,66.42
+9,17,1,16,320,10240,7680,32,6,66.42
+9,17,4,4,320,2560,0,32,6,43.18
+9,17,4,8,320,5120,2560,32,6,37.2
+9,17,4,16,320,10240,7680,32,6,37.2

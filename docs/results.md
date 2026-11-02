@@ -1,6 +1,6 @@
 # Results
 
-The tables below summarise selected thesis experiments. They separate three different measurements: a core running on an Arty board, a simulated network of workers, and internal timing analysis for a routed component on a larger FPGA. Their start and end points differ, so the times should not be ranked as if they measured the same complete decoder.
+The tables below summarise selected thesis experiments. They separate three different measurements: a core running on an Arty board, a simulated network of workers, and internal timing analysis for a routed component on a larger FPGA. Their start and end points differ, so the times should not be ranked as if they measured the same complete decoder. The [CSV guide](../results/README.md) explains the columns and scope of the accompanying data.
 
 ## Physical Arty measurements
 
@@ -41,9 +41,11 @@ At distance 33, the following completion times run from the first accepted host 
 
 More workers consistently help in the per-port study because total communication capacity grows with worker count. Under the fixed 32 Gbit/s budget, four workers are fastest through distance 49; sixteen are only narrowly faster at distance 65. There is no universal best board count. A separate one-worker 128 Gbit/s case was not run because its port remains capped at 32 Gbit/s.
 
-The links are digital simulation interfaces with a behavioural switch, not physical transceivers or cables. The results include the simulated loading, computation, exchange and return path, but exclude global decoding and a live quantum controller. Frames are separated by reset; these results do not establish continuous service. The [CSV](../results/distributed_scaling.csv) contains the primary and fixed-32 Gbit/s curve points only. The extra 128 Gbit/s comparison is in the table above.
+The links are digital simulation interfaces with a behavioural switch, not physical transceivers or cables. The results include the simulated loading, computation, exchange and return path, but exclude global decoding and a live quantum controller. Frames are separated by reset; these results do not establish continuous service. The [scaling CSV](../results/distributed_scaling.csv) contains the independent-port and fixed-32 Gbit/s curves. The [128 Gbit/s CSV](../results/distributed_128gbps.csv) records the extra comparison, including the reused four-worker point.
 
-A separate twelve-frame test used a 62.5 MHz worker clock and 100 MHz fabric clock, corresponding to one internally timed VU13P endpoint. It completed in approximately 134 µs at distance 33 with sixteen workers. Only that one endpoint geometry has the associated device timing evidence. The complete sixteen-worker system remained simulated.
+A separate twelve-frame test used a 62.5 MHz worker clock and 100 MHz fabric clock, corresponding to one internally timed VU13P endpoint. It completed in approximately 134 µs at distance 33 with sixteen workers. The [frame table](../results/distributed_clock_matched.csv) includes six normal frames and six completed frames after a reset during operation. Only that one endpoint geometry has the associated device timing evidence. The complete sixteen-worker system remained simulated.
+
+A small [queue-depth pilot](../results/distributed_queue_depth.csv) checked one and four workers at distance nine. Eight-record queues reduced completion compared with four-record queues; sixteen records gave no further improvement in those cases. The main scaling curves retain their original four-record queues.
 
 ## Internal timing on larger devices
 
@@ -60,6 +62,8 @@ Vivado implementation was also attempted for selected complete components. Two r
 The original clock targets failed setup where routing succeeded. The slower clocks were checked on the unchanged routed circuits. For example, the VP1902 resident worker failed its initial 250 MHz target by 4.587 ns before passing internal timing at 100 MHz.
 
 For that VP1902 core, three unpaused simulations each took 2,180 cycles from accepted start to the final result write. At the internally qualified 100 MHz clock, this corresponds to **21.8 µs**. Inputs were already loaded, and external readback and global decoding are excluded. Deliberately paused fixtures took longer. This is not the same endpoint as the distributed packet-based result above, and it is not a measurement on a physical VP1902 board.
+
+The [resident-cycle table](../results/resident_cycles.csv) also preserves the layer-overlap comparison and larger maps through distance 97. For example, at distance 33 with sixteen spatial lanes, overlapping the layers reduces 1,174 cycles to 478 at the same assumed clock. These cycle comparisons do not establish a routed clock for every configuration.
 
 The distance-49 3D core stores complete finite volumes in UltraRAM. Its 30,438,881 verified cycles at an exact 12 ns period correspond to about **365.27 ms** for the preloaded calculation. Demonstrating storage capacity does not establish a useful continuous quantum-round processing rate.
 

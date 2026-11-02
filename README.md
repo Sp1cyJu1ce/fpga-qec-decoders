@@ -31,8 +31,11 @@ python scripts/simulate_arty.py 3d
 With Icarus Verilog's `iverilog` and `vvp` on `PATH`:
 
 ```sh
+python scripts/simulate_arty.py 2d --simulator iverilog
 python scripts/simulate_scalable.py resident
 ```
+
+The 2D Arty check does not require Vivado. The 3D Arty check uses Vivado's simulator.
 
 The distributed example uses Verilator, CMake and a C++20 compiler:
 

@@ -33,6 +33,14 @@ Every decoder sees the same shots within a condition. Comparisons include CNN al
 
 Outputs contain the settings, software versions, source/model hashes, shot outcomes, counts and uncertainty intervals. The commands refuse to combine incompatible settings in one output folder. The execution time reported by Python is host computation time, not FPGA latency.
 
+The [saved result tables](../results/README.md#decoder-comparisons) include the thesis's main one-pass comparisons and complete-decoding pruning experiment. For paired-score intervals from aggregate counts:
+
+```sh
+python -m qec.paired_score --worse-only 2347 --better-only 2581 --shots 65536
+```
+
+This example gives the distance-33 float CNN plus MWPM comparison: about −0.357 percentage points, with a 95% interval of −0.567 to −0.147 points. Negative values favour the hybrid. The helper reports Tango's pointwise asymptotic score interval; the original simulation output fields retain their conservative construction. The results guide explains the distinct 2D and 3D failure definitions.
+
 ## IBM circuit construction
 
 Circuit generation is offline by default:

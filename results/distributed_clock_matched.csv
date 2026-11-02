@@ -1,0 +1,13 @@
+distance,map_width,workers,worker_period_ns,fabric_period_ns,scenario,frame,input_pattern,completion_us
+33,65,16,16,10,normal,0,zeros,133.71
+33,65,16,16,10,normal,1,ones,133.61
+33,65,16,16,10,normal,2,checkerboard,133.82
+33,65,16,16,10,normal,3,sparse_random,133.61
+33,65,16,16,10,normal,4,dense_random,133.82
+33,65,16,16,10,normal,5,impulses,133.61
+33,65,16,16,10,reset_recovery,0,zeros,133.59
+33,65,16,16,10,reset_recovery,1,ones,133.54
+33,65,16,16,10,reset_recovery,2,checkerboard,133.54
+33,65,16,16,10,reset_recovery,3,sparse_random,133.54
+33,65,16,16,10,reset_recovery,4,dense_random,133.54
+33,65,16,16,10,reset_recovery,5,impulses,133.54

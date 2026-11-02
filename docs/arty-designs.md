@@ -42,14 +42,20 @@ All three hidden volumes are stored in memory. This implementation handles a com
 
 ## Run the small checks
 
-Install Vivado and put its `bin` directory on `PATH`. Python uses only the standard library for these two tests:
+With Vivado's `bin` directory on `PATH`, run either check. Python uses only the standard library:
 
 ```text
 python scripts/simulate_arty.py 2d
 python scripts/simulate_arty.py 3d
 ```
 
-Alternatively, supply `--tool-dir "<Vivado installation>/bin"`. Each command creates a new directory under `build/`; use `--output <new-directory>` to keep another run. Existing output directories are not overwritten.
+The 2D fixture also runs with the free Icarus Verilog tools (`iverilog` and `vvp`):
+
+```sh
+python scripts/simulate_arty.py 2d --simulator iverilog
+```
+
+This path was checked with Icarus 13.0 on Windows. The 3D fixture still uses Vivado. Supply `--tool-dir "<simulator installation>/bin"` if the tools are not on `PATH`. Each command creates a fresh directory under `build/`; `--output <new-directory>` selects a different location. Existing output directories are never overwritten. Each compile or simulation stage has a 600-second timeout, adjustable with `--timeout-seconds`.
 
 The tests check every raw sum, hidden activation, prediction and synchronous output read against the included fixture. They also check the expected core cycle count: 4,377 clocks for 2D and 223,603 for 3D. The 3D test checks that consumers do not read a producer voxel before its complete write. These are short packaging checks, not a replacement for the larger thesis experiments. They do not exercise the UART or establish an FPGA clock frequency.
 

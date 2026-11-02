@@ -1,0 +1,4 @@
+distance,map_width,workers,worker_period_ns,fabric_period_ns,per_port_gbps_each_direction,aggregate_gbps_each_direction,frames,completion_us,reused_primary_execution
+33,65,4,10.0,10.0,32.0,128.0,6,214.58,1
+33,65,16,10.0,10.0,8.0,128.0,6,149.56,0
+33,65,64,10.0,10.0,2.0,128.0,6,209.77,0

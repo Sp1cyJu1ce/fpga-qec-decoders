@@ -14,3 +14,30 @@ keywords:
   - FPGA
   - Verilog
   - neural decoders
+references:
+  - type: article
+    title: "A scalable and fast artificial neural network syndrome decoder for surface codes"
+    authors:
+      - family-names: Gicev
+        given-names: Spiro
+      - family-names: Hollenberg
+        given-names: Lloyd C. L.
+      - family-names: Usman
+        given-names: Muhammad
+    journal: Quantum
+    volume: 7
+    start: 1058
+    year: 2023
+    doi: "10.22331/q-2023-07-12-1058"
+  - type: article
+    title: "Fully convolutional 3D neural network decoders for surface codes with syndrome circuit noise"
+    authors:
+      - family-names: Gicev
+        given-names: Spiro
+      - family-names: Hollenberg
+        given-names: Lloyd C. L.
+      - family-names: Usman
+        given-names: Muhammad
+    year: 2025
+    url: "https://arxiv.org/abs/2506.16113v1"
+    notes: "The implementation uses the model accompanying this preprint version."
