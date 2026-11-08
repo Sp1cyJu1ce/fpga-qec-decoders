@@ -14,7 +14,7 @@ The board used for the hardware experiments. [Short demonstration clip](docs/ass
 
 - [Arty designs and build instructions](docs/arty-designs.md): memory-based 2D and 3D cores, board interfaces and small simulation examples.
 - [Resident and distributed designs](docs/scalable-designs.md): overlapping layers, tile ownership and simulated communication.
-- [Distance-three cleanup](docs/distance-three-cleanup.md) describes a small FPGA lookup for MWPM and HDRG and its exhaustive RTL check.
+- [Global cleanup on an FPGA](docs/distance-three-cleanup.md) follows a residual through a lookup, a minimum-weight search or a clustering decoder. It also measures the extra cycles when the lookup is connected to the CNN.
 - [Results and their scope](docs/results.md): board measurements, simulated completion times and internal timing checks on larger devices.
 - [Quantum experiments and decoder comparisons](docs/quantum-experiments.md): IBM circuits, saved-data decoding, CNN/HDRG/MWPM simulations, pruning and decay fits.
 - [Architecture estimates](docs/architecture-model.md): resource and communication models for larger FPGA systems.
@@ -56,9 +56,9 @@ Each command compares the RTL with stored integer-reference results and reports 
 | [Arty 3D](rtl/arty_3d/) | Include measurement history and start a layer when its inputs are ready | Physical distance-five tests, plus larger finite-volume simulations |
 | [Resident 2D](rtl/resident_2d/) | Keep data on the device and overlap successive convolution layers | RTL simulations through distance 97; selected distance-33 internal timing on VP1902 |
 | [Distributed 2D](rtl/distributed_2d/) | Assign each output to one worker and exchange the neighbouring values it needs | Simulated networks through distance 65 and up to 64 workers |
-| [Distance-three cleanup](rtl/cleanup_d3/) | Look up both components of a complete residual using MWPM or HDRG | All 8,192 mode/input cases in RTL, with internal timing at 100 MHz on the Arty target |
+| [Global cleanup](docs/distance-three-cleanup.md) | Return a correction for the whole patch by lookup, search or cluster growth | Exhaustive distance-three checks, exhaustive distance-five HDRG component checks and a connected distance-three CNN simulation |
 
-The four neural designs produce local predictions. The standalone distance-three cleanup core starts once the complete residual is available. Connecting these stages to a quantum controller would also require residual construction, transport and a final frame update.
+The four neural designs produce local predictions. A [distance-three RTL example](rtl/hybrid_d3/cnn_cleanup_d3.v) reads those predictions from the 2D CNN, forms the residual and returns the combined correction. A physical feedback experiment would also need measurement transport and a controller that applies or records that correction.
 
 ```mermaid
 flowchart LR

@@ -70,8 +70,9 @@ def simulate(output, tool_dir, simulator):
     if tool_dir:
         environment["PATH"] = str(tool_dir.resolve()) + os.pathsep + environment.get("PATH", "")
     for name, *arguments in commands:
-        run([find_tool(name, tool_dir), *arguments], output, name + ".log", 300, environment)
-    log = (output / (commands[-1][0] + ".log")).read_text(encoding="utf8", errors="replace")
+        # Vivado also creates a log named after each executable in this directory.
+        run([find_tool(name, tool_dir), *arguments], output, name + ".stdout.log", 300, environment)
+    log = (output / (commands[-1][0] + ".stdout.log")).read_text(encoding="utf8", errors="replace")
     if "PASS: 8192 records, one cycle from acceptance to completion" not in log:
         raise RuntimeError(f"The RTL latency check failed. See {output}")
     return output / "responses.csv"

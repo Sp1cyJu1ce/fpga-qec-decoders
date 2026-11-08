@@ -13,7 +13,7 @@ The `models/` directories contain the floating-point parameters and the integer 
 
 The FPGA implementation work, experiments, documentation and figures form part of Mohit Garg's Master of Computer Science research at the University of Melbourne. The contribution includes memory organisation, scheduling, integer hardware, verification and scaling studies. The Python package includes the experiment circuits, numerical references and decoder comparisons. HDRG follows the local clustering approach discussed in the 2D paper, with the path construction and tie-breaking specified in the code. It does not claim authorship of the original neural models.
 
-OpenAI ChatGPT assisted with Verilog debugging and refactoring, and with figure refinement, as acknowledged in the thesis.
+OpenAI ChatGPT assisted with Verilog debugging and refactoring, figure refinement, and the implementation and verification of the small FPGA cleanup experiments.
 
 ## Media and tools
 

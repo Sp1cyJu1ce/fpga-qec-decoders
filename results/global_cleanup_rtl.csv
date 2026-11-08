@@ -1,0 +1,6 @@
+core,distance,interval_start,interval_end,min_cycles,max_cycles,period_ns,luts,flip_flops,bram36_equivalents,dsps,setup_slack_ns,hold_slack_ns
+lookup,3,residual_accepted,both_masks_valid,1,1,10,41,41,0,0,7.648,0.172
+minimum_weight_search,3,residual_accepted,both_masks_valid,21,21,10,282,418,0,0,5.741,0.096
+hdrg,3,residual_accepted,both_masks_valid,1,9,10,153,85,0,0,4.937,0.165
+hdrg,5,residual_accepted,both_masks_valid,1,27,10,673,255,0,0,2.751,0.178
+cnn_with_lookup,3,last_cnn_decision,combined_masks_valid,17,17,10,41474,22553,5.5,189,0.069,0.082

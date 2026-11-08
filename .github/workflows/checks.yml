@@ -28,3 +28,10 @@ jobs:
         run: python scripts/simulate_arty.py 2d --simulator iverilog
       - name: Check every distance-three cleanup input
         run: python scripts/check_cleanup_d3.py --simulate --simulator iverilog
+      - name: Check the run-time search and cluster decoders
+        run: |
+          python scripts/check_minimum_weight_d3.py --simulate --simulator iverilog
+          python scripts/check_hdrg_online.py --distance 3 --simulator iverilog
+          python scripts/check_hdrg_online.py --distance 5 --simulator iverilog
+      - name: Exercise the CNN and correction lookup together
+        run: python scripts/check_hybrid_d3.py --frames 4 --simulator iverilog

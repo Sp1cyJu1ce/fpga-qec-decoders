@@ -71,6 +71,10 @@ The distance-49 3D core stores complete finite volumes in UltraRAM. Its 30,438,8
 
 [Internal timing CSV](../results/native_timing.csv)
 
+## Global correction on a small patch
+
+The [FPGA cleanup study](distance-three-cleanup.md) starts with a complete residual syndrome and ends when both correction masks are available. It compares a lookup with circuits that calculate their answer at run time. The guide also gives the extra cycles spent reading the CNN's decisions and forming the residual in a connected distance-three design. The [CPU cleanup measurements](../results/cleanup_latency.csv) time software calls on stored inputs.
+
 ## What these results do not claim
 
 Correct integer arithmetic does not by itself establish successful quantum error correction. Decoder quality is evaluated separately in the thesis using shared simulated faults and quantum-device records. Likewise, a fast neural core does not include the time to construct the residual, run the global decoder and deliver a correction to a controller.

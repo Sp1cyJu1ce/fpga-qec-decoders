@@ -1,6 +1,6 @@
 # Quantum experiments and software decoders
 
-The Python package contains the input encoding, neural inference, HDRG, matching and IBM circuit code used to study decoder quality. The networks use the trained parameters described in [the attribution](../ATTRIBUTION.md). This repository does not train a new network. Numerical decoder tests and FPGA timing tests answer different questions: the first checks whether a correction works, while the second checks how quickly the hardware produces its neural prediction.
+The Python package contains the input encoding, neural inference, HDRG, matching and IBM circuits used to study decoder quality. The networks use the trained parameters described in [the attribution](../ATTRIBUTION.md). The experiments on this page measure whether the correction protects the encoded information. The [FPGA cleanup study](distance-three-cleanup.md) measures the time a small circuit takes to produce a correction from a residual syndrome.
 
 Run commands from the repository root. Install the analysis dependencies in a virtual environment:
 

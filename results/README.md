@@ -30,6 +30,8 @@ Frames and repeated board transactions are hardware test inputs, not independent
 
 The cleanup table times 2,048 distinct stored records three times, after 128 warm-up calls, on one pinned Intel Core Ultra 9 386H CPU core. It excludes CNN inference, graph construction, input conversion, residual updates and communication. `raw` means global decoding of the original input; `integer1` means global decoding after one integer CNN pass. `ndim` distinguishes spatial from space-time experiments. Means, medians, p95 and p99 are in microseconds per record. Percentiles describe these calls, not a bound on future latency. Noise is 0.13 with ideal checks in 2D and circuit-noise parameter 0.005 in 3D. The 3D calls return the measured logical-parity correction, whereas 2D returns both correction components. Compare before and after within each row; different algorithms also have different software implementations.
 
+The [FPGA cleanup study](../docs/distance-three-cleanup.md) documents the separate RTL experiments and gives their input-to-output timing boundaries.
+
 ## Decoder comparisons
 
 The 2D table uses independent depolarising data errors with probability 0.13 and perfect checks on an unrotated patch. Failure includes a remaining syndrome or a logical error in either Pauli component. The 3D table uses the full simulated circuit-noise model with parameter 0.005, as many rounds as the distance, and a rotated patch. Its outcome is incorrect final logical parity for the prepared X or Z memory. It cannot be read as simultaneous failure of both memories. `mwpm_dem` uses circuit-derived edge weights; `correlated_dem` also uses correlations between faults. Both tables apply one neural pass before the named global decoder.
