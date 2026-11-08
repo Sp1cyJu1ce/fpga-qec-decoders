@@ -18,6 +18,10 @@ A second test used 32 fresh distance-33 frames with a 13% physical data-error pr
 * The [connected tests](../scripts/check_hybrid_hdrg.py) checked the integer CNN decisions, the residual, both global masks and the combined result. The initial sweep covered distances 3, 5, 7, 9, 13, 17, 21, 25, 29 and 33. Each distance had four directed patterns and four independent trials at each physical error probability of 1%, 5%, 13% and 20%. An additional paired run at distance 33 compares cleanup of exactly the same frames before and after the CNN.
 * The [frame results](../results/cnn_hdrg_frames.csv) report elapsed RTL clocks. The [standalone summary](../results/hdrg_stream_distances.csv) and [route results](../results/hdrg_stream_routes.csv) cover the residual-only circuit. A sampled maximum at a larger distance is the longest observed case. Only the separate [small-patch designs](distance-three-cleanup.md) have the exhaustive distance-five HDRG bound or a distance-three exact minimum-weight implementation.
 
+## Implemented clock at distance 33
+
+The complete CNN and both cluster engines routed on a Virtex UltraScale+ VU13P (xcvu13p-flga2577-3-e). The 10 ns clock passed internal timing with +1.858 ns setup slack, +0.040 ns hold slack and +4.505 ns pulse-width slack. All 82,911 routable nets were connected. The design used 59,383 LUTs, 38,048 flip-flops, 77.5 block RAM tiles and 189 DSPs. At that clock, the 32 paired trials took **30.28–45.60 µs after the CNN**, with a median of **32.79 µs**. The all-fired stress test took **245.28 µs after the CNN**. These times use simulated cycles and the routed internal clock. The input and correction ports are internal buses. [Connected route results](../results/cnn_hdrg_route.csv)
+
 ## Can the added time be bounded?
 
 For this circuit and one preloaded distance-33 frame, a conservative upper bound is **172,301 extra clocks**. It includes 2,115 clocks before the cluster engines accept the residual, at most 170,185 search clocks and one output clock. The exact worst-case input at distance 33 is unknown.

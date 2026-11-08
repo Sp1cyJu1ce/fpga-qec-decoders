@@ -1,0 +1,2 @@
+distance,part,period_ns,setup_ns,hold_ns,pulse_width_slack_ns,internal_timing_met,luts,flip_flops,bram36,dsp,routed_nets
+33,xcvu13p-flga2577-3-e,10.0,1.858,0.04,4.505,True,59383,38048,77.5,189,82911
