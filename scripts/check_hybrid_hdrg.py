@@ -60,6 +60,7 @@ def write_vectors(d, samples, seed, out, noise_rate=None):
     with (
         (out / "cnn_inputs.hex").open("w", encoding="ascii") as inputs,
         (out / "expected.hex").open("w", encoding="ascii") as expected,
+        (out / "residual_syndromes.hex").open("w", encoding="ascii") as residuals,
     ):
         count = 4 + 4 * samples if noise_rate is None else samples
         expected.write(f"{count}\n")
@@ -79,6 +80,8 @@ def write_vectors(d, samples, seed, out, noise_rate=None):
             residual = [
                 s ^ ((h @ mask) % 2) for s, h, mask in zip((sz, sx), geometry.H, local)
             ]
+            # The standalone HDRG bench takes Z checks first, then X checks.
+            print(*map(hex_bits, residual), file=residuals)
             global_masks = decoder.decode_batch([s[None, :] for s in residual])[0]
             final = local ^ global_masks
             for s, h, mask in zip((sz, sx), geometry.H, final):

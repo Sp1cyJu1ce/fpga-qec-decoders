@@ -15,7 +15,8 @@ These CSVs contain selected thesis results. They describe different timing bound
 | [decoder_quality_3d.csv](decoder_quality_3d.csv) | The corresponding finite-memory comparison at four distances, with X and Z memories kept separate. |
 | [pruning_complete_decoding.csv](pruning_complete_decoding.csv) | Saved complete-decoding outcomes after pruning floating-point weights, at distances 9, 17 and 33. |
 | [pass_selection.csv](pass_selection.csv) | Pass counts chosen on separate tuning trials, including the option to use global decoding alone. |
-| [cnn_hdrg_frames.csv](cnn_hdrg_frames.csv) | Connected RTL, from the last CNN prediction through readback, HDRG and the final correction register. |
+| [cnn_hdrg_frames.csv](cnn_hdrg_frames.csv) | Connected CNN and HDRG at ten distances, plus the original 32 paired distance-33 frames (seed 20261109). |
+| [independent_cleanup_d33_frames.csv](independent_cleanup_d33_frames.csv) | All 32 fresh frames from Appendix B.8 (seed 405731), with standalone XSim counts for the original checks and the CNN residual. |
 | [hdrg_stream_distances.csv](hdrg_stream_distances.csv) | Standalone cluster-search clocks for 4,951 joint syndromes at ten distances. |
 | [cnn_hdrg_route.csv](cnn_hdrg_route.csv) | Internal VU13P timing and resources for the complete distance-33 CNN, readback, residual and both HDRG engines. |
 | [hdrg_stream_routes.csv](hdrg_stream_routes.csv) | Internal implementation timing and resources for the standalone HDRG hardware. |
@@ -34,7 +35,11 @@ Frames and repeated board transactions are hardware test inputs, not independent
 
 The cleanup table times 2,048 distinct stored records three times, after 128 warm-up calls, on one pinned Intel Core Ultra 9 386H CPU core. It excludes CNN inference, graph construction, input conversion, residual updates and communication. `raw` means global decoding of the original input; `integer1` means global decoding after one integer CNN pass. `ndim` distinguishes spatial from space-time experiments. Means, medians, p95 and p99 are in microseconds per record. Percentiles describe these calls, not a bound on future latency. Noise is 0.13 with ideal checks in 2D and circuit-noise parameter 0.005 in 3D. The 3D calls return the measured logical-parity correction, whereas 2D returns both correction components. Compare before and after within each row; different algorithms also have different software implementations.
 
-The [FPGA cleanup study](../docs/distance-three-cleanup.md) documents the separate RTL experiments and gives their input-to-output timing boundaries.
+### Reading a distance-33 cleanup row
+
+Each row in the independent CSV is one simulated frame. `fired` counts checks that fired at the input. `residual_fired` counts those still fired after the CNN’s proposed correction. The `case` number identifies a frame within its seed.
+
+All timing columns are clocks. For example, the first frame took 4,619 clocks with HDRG alone (`raw_xsim_cycles`). HDRG on the residual took 1,212 clocks in the connected circuit (`hdrg_cycles`) and in standalone XSim (`residual_xsim_cycles`). Reading the CNN decisions and handing the residual to the engines took another 2,115 clocks. With the final clock to combine the masks, cleanup added 3,328 clocks. The complete loaded frame took 150,369 + 3,328 = 153,697 clocks. Figure B.3 shows the registers at the start and end of these measurements. [Circuit diagram and replay instructions](../docs/scalable-cleanup.md)
 
 ## Decoder comparisons
 

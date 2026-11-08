@@ -8,6 +8,7 @@
 *.hex text eol=lf
 *.csv text eol=lf
 *.cff text eol=lf
+*.pdf binary
 *.png binary
 *.jpg binary
 *.mp4 binary

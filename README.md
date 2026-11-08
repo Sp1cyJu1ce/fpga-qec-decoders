@@ -8,13 +8,13 @@ The project asks how a neural decoder can fit on an FPGA, how much parallel comp
   <img src="docs/assets/arty-board.jpg" alt="Arty A7-100T connected by USB during an earlier distance-five demonstration" width="760">
 </p>
 
-The board used for the hardware experiments. [Short demonstration clip](docs/assets/arty-board-demo.mp4), recorded during an earlier distance-five implementation. The clip illustrates the setup; the numerical results are documented separately.
+My Arty A7-100T test setup. The [short demonstration clip](docs/assets/arty-board-demo.mp4) shows an early distance-five run.
 
 ## Start here
 
 - [Arty designs and build instructions](docs/arty-designs.md): memory-based 2D and 3D cores, board interfaces and small simulation examples.
 - [Resident and distributed designs](docs/scalable-designs.md): overlapping layers, tile ownership and simulated communication.
-- [Global cleanup on an FPGA](docs/distance-three-cleanup.md) follows a residual through a lookup, a minimum-weight search or a clustering decoder. It also measures the extra cycles when the lookup is connected to the CNN.
+- [Global cleanup after the CNN](docs/scalable-cleanup.md) follows a prediction through to a complete correction. It includes the implementation diagram from Appendix B.8 and both sets of 32 distance-33 timing results.
 - [Results and their scope](docs/results.md): board measurements, simulated completion times and internal timing checks on larger devices.
 - [Quantum experiments and decoder comparisons](docs/quantum-experiments.md): IBM circuits, saved-data decoding, CNN/HDRG/MWPM simulations, pruning and decay fits.
 - [Architecture estimates](docs/architecture-model.md): resource and communication models for larger FPGA systems.
@@ -69,7 +69,7 @@ flowchart LR
     E --> F[Correction or Pauli-frame update]
 ```
 
-The Python package implements input encoding, residual construction and global decoding for offline comparisons. IBM measurements are collected and decoded separately. The repository does not claim a live FPGA-to-QPU feedback demonstration.
+The Python package implements input encoding, residual construction and global decoding. I used it to compare decoders on simulated errors and on records collected from IBM hardware. The FPGA feedback path was tested in RTL simulation.
 
 For a small software comparison:
 
@@ -96,13 +96,13 @@ results/      Selected thesis results in CSV form
 docs/         Design notes, results and figures
 ```
 
-The resident and distributed folders contain some identically named modules with different interfaces. The launchers select the relevant source files; do not compile every file under `rtl/` into one design. The large files under `rtl/hardwired_2d/` are generated fixed-coefficient arithmetic, shared by the scalable designs.
+The resident and distributed designs reuse some module names for different interfaces. Use the launchers to select the source files for each build. The large files under `rtl/hardwired_2d/` are generated fixed-coefficient arithmetic, shared by the scalable designs.
 
 ## Reading the results
 
 More parallel workers help when there is enough communication capacity to feed them. With a fixed total bandwidth, extra workers can exchange so much overlapping data that completion becomes slower. Memory layout, arithmetic, clock timing and communication therefore have to be considered together.
 
-The repository distinguishes physical board measurements, digital simulations and internal implementation timing. A passing simulation is not a physical multi-board demonstration. The small packaged tests are convenient examples, not replacements for the thesis's full experiments.
+At distance 33, HDRG found a correction faster after the CNN reduced the number of fired checks. The CNN took longer to run than the search time it saved. The [per-frame results](results/independent_cleanup_d33_frames.csv) give the original search time, the residual search time and the time for the complete loaded frame.
 
 ## Attribution and citation
 

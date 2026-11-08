@@ -1,26 +1,37 @@
-# Cleanup on larger patches
+# Global cleanup after the CNN
 
-How much time passes between the last local CNN prediction and a complete correction? This design connects the banked integer 2D CNN to two HDRG cluster engines. Each frame describes an unrotated surface-code patch with perfect check measurements. One engine finds an X mask from the residual Z checks. The other finds a Z mask from the residual X checks.
+The spatial CNN proposes a correction for each data qubit. Some checks can still be fired after those proposals are applied. This experiment asks how long the FPGA needs to read the CNN output, resolve the remaining checks and return a complete correction. The inputs are 2D surface-code patches with perfect check measurements.
 
-![Data path from the CNN decision memory through residual parity, the two cluster engines and the final correction registers](assets/scalable-cleanup.png)
+[![FPGA cleanup circuits showing the distance-three lookup and exact search, the path from CNN memory to the two HDRG engines, and the search inside one engine](assets/global-cleanup.png)](assets/global-cleanup.pdf)
 
-## Readback and search
+**Figure B.3, Appendix B.8.** Panel (a) shows two small-patch designs. The lookup reads an answer computed in advance by minimum-weight perfect matching (MWPM) or hard-decision renormalisation group (HDRG), a clustering decoder. The exact search tries the correction masks consistent with the checks and selects one of minimum weight. Panels (b) and (c) show the HDRG implementation tested through distance 33. [Vector PDF](assets/global-cleanup.pdf) · [Small-patch implementations and timing](distance-three-cleanup.md)
 
-The [connected top](../rtl/hybrid_hdrg/cnn_hdrg.sv) saves the original checks while loading the frame. Once the CNN finishes, it reads one data qubit's X and Z predictions per clock from decision RAM. Each original check is XORed with the parity predicted by its neighbouring data sites. The two [HDRG engines](../rtl/hdrg_stream/hdrg_stream.sv) start together on those residuals. Each holds the remaining checks in rows and records the members of a cluster in a queue. When it can resolve that cluster, it walks the selected paths and flips one correction bit per step. A final register combines the local and global masks component by component.
+## What the timer measures
 
-At distance 33, the CNN writes its last prediction at clock 150,369. The handoff, 2,113 data-site reads and acceptance of the residual take another 2,115 clocks. The rest depends on the input. The empty patch takes 33 HDRG clocks and one final XOR clock, giving **2,149 extra clocks**. With every input check fired, it takes 22,412 HDRG clocks and one final XOR clock, giving **24,528 extra clocks**. Input loading and delivery to a quantum controller are outside these intervals.
+The [connected circuit](../rtl/hybrid_hdrg/cnn_hdrg.sv) saves the original checks when it loads a frame. After the CNN writes its last prediction, the circuit reads one data qubit’s X and Z decisions per clock. For each check, it compares the parity of the neighbouring predictions with the saved check bit. The checks still left to explain form the *residual*.
 
-A second test used 32 fresh distance-33 frames with a 13% physical data-error probability. Running the same HDRG logic directly on the original checks took a median of 4,746 clocks. On the CNN residual, the median was 1,163. Including readback and the final register gave 3,279 extra clocks after inference (range 3,028–4,560). Adding the fixed CNN time gave a median of 153,648 clocks from a loaded frame. Search was faster on every residual, but adding the CNN increased total clocks on all 32 frames. This comparison measures latency; the decoder-quality study uses its own trials.
+Two [HDRG engines](../rtl/hdrg_stream/hdrg_stream.sv) then work in parallel. One uses the residual Z checks to find an X correction. The other uses the residual X checks to find a Z correction. Each engine queues nearby fired checks into a cluster and follows paths to resolve it. When both masks are ready, the circuit XORs them with the CNN masks. The final register stops the timer.
 
-## What was verified
+At distance 33 the handoff, 2,113 data-site reads and acceptance of the residual take **2,115 clocks**. Even an empty patch takes 33 search clocks. One more clock combines the masks, giving 2,149 clocks after the CNN. With every input check fired, the same circuit takes 24,528 extra clocks. Both measurements start with the input already on the FPGA. Loading it from a controller and delivering the final correction would take additional time.
 
-* The [standalone tests](../scripts/check_hdrg_stream.py) compared both RTL correction masks with the [spatial HDRG reference](../qec/hdrg.py). They covered all 4,096 joint syndromes at distance three and 95 selected cases at each of nine larger distances. Each larger set included physical Pauli errors, independently fired checks and directed patterns.
-* The [connected tests](../scripts/check_hybrid_hdrg.py) checked the integer CNN decisions, the residual, both global masks and the combined result. The initial sweep covered distances 3, 5, 7, 9, 13, 17, 21, 25, 29 and 33. Each distance had four directed patterns and four independent trials at each physical error probability of 1%, 5%, 13% and 20%. An additional paired run at distance 33 compares cleanup of exactly the same frames before and after the CNN.
-* The [frame results](../results/cnn_hdrg_frames.csv) report elapsed RTL clocks. The [standalone summary](../results/hdrg_stream_distances.csv) and [route results](../results/hdrg_stream_routes.csv) cover the residual-only circuit. A sampled maximum at a larger distance is the longest observed case. Only the separate [small-patch designs](distance-three-cleanup.md) have the exhaustive distance-five HDRG bound or a distance-three exact minimum-weight implementation.
+## Distance-33 results
 
-## Implemented clock at distance 33
+For each frame I ran HDRG on the original checks, then on the residual left by the integer CNN. Each data qubit had a 13% chance of an X, Y or Z error, with the three errors equally likely. Each row below uses 32 frames. The independent test uses a different seed.
 
-The complete CNN and both cluster engines routed on a Virtex UltraScale+ VU13P (xcvu13p-flga2577-3-e). The 10 ns clock passed internal timing with +1.858 ns setup slack, +0.040 ns hold slack and +4.505 ns pulse-width slack. All 82,911 routable nets were connected. The design used 59,383 LUTs, 38,048 flip-flops, 77.5 block RAM tiles and 189 DSPs. At that clock, the 32 paired trials took **30.28–45.60 µs after the CNN**, with a median of **32.79 µs**. The all-fired stress test took **245.28 µs after the CNN**. These times use simulated cycles and the routed internal clock. The input and correction ports are internal buses. [Connected route results](../results/cnn_hdrg_route.csv)
+| Frames | HDRG on original checks, median clocks | HDRG on residual, median clocks | Added time after the CNN, median | Added time, observed range |
+|---|---:|---:|---:|---:|
+| [Chapter 8 sample](../results/cnn_hdrg_frames.csv), seed 20261109 | 4,746 | 1,163 | 32.79 µs | 30.28–45.60 µs |
+| [Appendix B.8 check](../results/independent_cleanup_d33_frames.csv), seed 405731 | 4,658 | 1,284.5 | 34.005 µs | 28.27–41.94 µs |
+
+The original-check and residual columns time the HDRG search. The last two columns also count readback and the final register. Times use the 100 MHz clock met by the routed distance-33 design. The median of 32 integer counts can fall halfway between two clocks.
+
+On every frame in both samples the search finished sooner after the CNN. The CNN itself took 150,369 clocks per frame, so direct HDRG still returned a complete correction sooner on every input. The independent run also checked the residual search in a second simulator. Vivado XSim reproduced the search time on each of the 32 residuals, and both simulators agreed with the software correction masks. The [decoder-quality experiments](quantum-experiments.md) test how often the correction succeeds.
+
+## Distance sweep and routed clock
+
+The connected RTL ran at distances 3, 5, 7, 9, 13, 17, 21, 25, 29 and 33. At each distance I checked four fixed patterns and four random frames at each of 1%, 5%, 13% and 20% physical error probability. The standalone tests covered all 4,096 joint syndromes at distance three and 95 cases at each larger distance. [Connected frame counts](../results/cnn_hdrg_frames.csv) · [Standalone search counts](../results/hdrg_stream_distances.csv)
+
+The complete distance-33 circuit met a 10 ns clock period after routing on a Virtex UltraScale+ VU13P (xcvu13p-flga2577-3-e). Setup slack was +1.858 ns, hold slack +0.040 ns and pulse-width slack +4.505 ns. The implementation used 59,383 LUTs, 38,048 flip-flops, 77.5 BRAM36 tiles and 189 DSPs. The latency figures above combine simulated cycles with this internal timing result. [Connected route](../results/cnn_hdrg_route.csv) · [Standalone routes](../results/hdrg_stream_routes.csv)
 
 ## Can the added time be bounded?
 
@@ -30,21 +41,28 @@ To see where the bound comes from, consider one engine. A component has at most 
 
 ## Repeat the tests
 
-Install the dependencies in [requirements-core.txt](../requirements-core.txt). For quick simulator checks, place Icarus Verilog on the path and run from the repository root.
+Install the Python dependencies from the repository root. For a small example, put Icarus Verilog on the path and run:
 
 ```sh
+python -m pip install -r requirements-core.txt
 python scripts/check_hdrg_stream.py --distance 7 --samples 1 --simulator iverilog
 python scripts/check_hybrid_hdrg.py --distance 3 --samples-per-rate 1 --simulator iverilog
 ```
 
-For the full size, the standalone test uses Vivado XSim by default. The connected test uses Verilator, CMake and a C++20 compiler. The commands write their inputs and results to separate directories under `build/`.
+To reproduce the independent distance-33 result, use Verilator, CMake 3.20 or newer and a C++20 compiler for the connected circuit. Use Vivado XSim for the two standalone runs. The connected run uses the integer CNN and checks its local decisions, residual and combined correction against software.
 
 ```sh
-python scripts/check_hdrg_stream.py --distance 33
-python scripts/check_hybrid_hdrg.py --distance 33
-python scripts/check_hybrid_hdrg.py --distance 33 --noise-rate 0.13 --samples-per-rate 32 --seed 20261109
+python scripts/check_hybrid_hdrg.py --distance 33 --simulator verilator --noise-rate 0.13 --samples-per-rate 32 --seed 405731
 ```
 
-The connected run saves the original check bits in `raw_syndromes.hex`. To repeat the paired comparison, run `python scripts/check_hdrg_stream.py --distance 33 --input-hex <connected-run>/raw_syndromes.hex`, replacing `<connected-run>` with the run directory printed by the connected test.
+In the commands below, replace `CONNECTED_RUN` with the directory printed by that command. The two hex files list the original and residual checks in the same frame order. Each standalone run prints its own directory. Pass those as `RAW_RUN` and `RESIDUAL_RUN` to compare the results with the published CSV.
 
-For implementation, launch Vivado in an empty scratch directory. The [connected build](../scripts/build_hybrid_hdrg.tcl) takes distance, part and clock period in nanoseconds. For example, pass `-tclargs 33 xcvu13p-flga2577-3-e 10.0`. The [standalone build](../scripts/build_hdrg_stream.tcl) and [clock recheck](../scripts/check_hdrg_stream_timing.tcl) cover the two cluster engines alone.
+```sh
+python scripts/check_hdrg_stream.py --distance 33 --simulator xsim --input-hex "CONNECTED_RUN/raw_syndromes.hex"
+python scripts/check_hdrg_stream.py --distance 33 --simulator xsim --input-hex "CONNECTED_RUN/residual_syndromes.hex"
+python scripts/check_cleanup_frames.py "CONNECTED_RUN" "RAW_RUN" "RESIDUAL_RUN"
+```
+
+For the Chapter 8 sample, use seed `20261109` in the connected command. Compare that run with the rows labelled `paired_p013` in the original frame table. The comparison script above checks the independent sample with seed 405731. Running the two simulator launchers at a distance without `--noise-rate` or `--input-hex` uses their standard mix of test inputs.
+
+The [connected Vivado build](../scripts/build_hybrid_hdrg.tcl) takes the distance, part and clock period in nanoseconds. For the routed result, launch Vivado in an empty scratch directory and pass `-tclargs 33 xcvu13p-flga2577-3-e 10.0`. The [standalone build](../scripts/build_hdrg_stream.tcl) and [clock recheck](../scripts/check_hdrg_stream_timing.tcl) cover the two cluster engines alone.

@@ -73,9 +73,11 @@ The distance-49 3D core stores complete finite volumes in UltraRAM. Its 30,438,8
 
 ## Global correction after the CNN
 
-The [FPGA cleanup study](distance-three-cleanup.md) starts with a complete residual syndrome and ends when both correction masks are available. It compares a lookup with circuits that calculate their answer at run time. The guide also gives the extra cycles spent reading the CNN's decisions and forming the residual in a connected distance-three design. The [connected CNN and HDRG experiment](scalable-cleanup.md) measures the time from the last local prediction to the final correction at ten distances through 33. The [CPU cleanup measurements](../results/cleanup_latency.csv) time software calls on stored inputs.
+In the original 32 distance-33 trials, the connected FPGA design took **30.28–45.60 µs** from the last CNN prediction to the combined correction. On 32 independently drawn frames it took **28.27–41.94 µs**. Both used 13% physical error probability. The counts come from RTL simulation, converted to time at the 100 MHz clock the VU13P design met after routing. Figure B.3 shows which parts of the circuit that interval covers. [Appendix B.8 diagram and reproduction instructions](scalable-cleanup.md) · [Original frame counts](../results/cnn_hdrg_frames.csv) · [Independent frame counts](../results/independent_cleanup_d33_frames.csv)
 
-## What these results do not claim
+The [small-patch circuits](distance-three-cleanup.md) include a distance-three lookup that responds in one clock with a complete residual already at its input. The [CPU results](../results/cleanup_latency.csv) time software decoder calls on stored inputs.
+
+## Connecting to a controller
 
 Correct integer arithmetic does not by itself establish successful quantum error correction. Decoder quality is evaluated separately in the thesis using shared simulated faults and quantum-device records. Likewise, a fast neural core does not include the time to construct the residual, run the global decoder and deliver a correction to a controller.
 
