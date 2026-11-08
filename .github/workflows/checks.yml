@@ -26,3 +26,5 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Check the 2D Arty example against stored layer values
         run: python scripts/simulate_arty.py 2d --simulator iverilog
+      - name: Check every distance-three cleanup input
+        run: python scripts/check_cleanup_d3.py --simulate --simulator iverilog

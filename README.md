@@ -14,12 +14,13 @@ The board used for the hardware experiments. [Short demonstration clip](docs/ass
 
 - [Arty designs and build instructions](docs/arty-designs.md): memory-based 2D and 3D cores, board interfaces and small simulation examples.
 - [Resident and distributed designs](docs/scalable-designs.md): overlapping layers, tile ownership and simulated communication.
+- [Distance-three cleanup](docs/distance-three-cleanup.md) describes a small FPGA lookup for MWPM and HDRG and its exhaustive RTL check.
 - [Results and their scope](docs/results.md): board measurements, simulated completion times and internal timing checks on larger devices.
 - [Quantum experiments and decoder comparisons](docs/quantum-experiments.md): IBM circuits, saved-data decoding, CNN/HDRG/MWPM simulations, pruning and decay fits.
 - [Architecture estimates](docs/architecture-model.md): resource and communication models for larger FPGA systems.
 - [Model and source attribution](ATTRIBUTION.md): the research behind the networks and the included coefficient files.
 
-The small examples exercise the packaged HDL without an FPGA board. The HDL launchers use Python 3.10 or later and the standard library, and stage inputs under `build/`. The software decoder package has separate dependencies listed in its guide.
+The small examples exercise the packaged HDL in simulation and stage their inputs under `build/`. The Arty and scalable-core examples use Python launchers. The distance-three cleanup check also uses the software decoder dependencies listed in its guide.
 
 With Vivado's simulator on `PATH`:
 
@@ -55,8 +56,9 @@ Each command compares the RTL with stored integer-reference results and reports 
 | [Arty 3D](rtl/arty_3d/) | Include measurement history and start a layer when its inputs are ready | Physical distance-five tests, plus larger finite-volume simulations |
 | [Resident 2D](rtl/resident_2d/) | Keep data on the device and overlap successive convolution layers | RTL simulations through distance 97; selected distance-33 internal timing on VP1902 |
 | [Distributed 2D](rtl/distributed_2d/) | Assign each output to one worker and exchange the neighbouring values it needs | Simulated networks through distance 65 and up to 64 workers |
+| [Distance-three cleanup](rtl/cleanup_d3/) | Look up both components of a complete residual using MWPM or HDRG | All 8,192 mode/input cases in RTL, with internal timing at 100 MHz on the Arty target |
 
-These cores produce local neural predictions. A complete quantum error-correction system also needs residual construction, a global decoder such as MWPM or HDRG, and a quantum-controller interface. Those stages are not implemented by the HDL in this repository.
+The four neural designs produce local predictions. The standalone distance-three cleanup core starts once the complete residual is available. Connecting these stages to a quantum controller would also require residual construction, transport and a final frame update.
 
 ```mermaid
 flowchart LR
