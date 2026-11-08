@@ -56,9 +56,9 @@ Each command compares the RTL with stored integer-reference results and reports 
 | [Arty 3D](rtl/arty_3d/) | Include measurement history and start a layer when its inputs are ready | Physical distance-five tests, plus larger finite-volume simulations |
 | [Resident 2D](rtl/resident_2d/) | Keep data on the device and overlap successive convolution layers | RTL simulations through distance 97; selected distance-33 internal timing on VP1902 |
 | [Distributed 2D](rtl/distributed_2d/) | Assign each output to one worker and exchange the neighbouring values it needs | Simulated networks through distance 65 and up to 64 workers |
-| [Global cleanup](docs/distance-three-cleanup.md) | Return a correction for the whole patch by lookup, search or cluster growth | Exhaustive distance-three checks, exhaustive distance-five HDRG component checks and a connected distance-three CNN simulation |
+| [Global cleanup](docs/scalable-cleanup.md) | Read CNN decisions, form the residual and return both correction masks | Connected CNN and HDRG in RTL at ten distances through 33, with separate exhaustive small-patch checks |
 
-The four neural designs produce local predictions. A [distance-three RTL example](rtl/hybrid_d3/cnn_cleanup_d3.v) reads those predictions from the 2D CNN, forms the residual and returns the combined correction. A physical feedback experiment would also need measurement transport and a controller that applies or records that correction.
+The four neural designs produce local predictions. The [connected 2D design](rtl/hybrid_hdrg/cnn_hdrg.sv) reads those predictions and sends the remaining checks to two HDRG engines. The [small-patch experiments](docs/distance-three-cleanup.md) also test a lookup and an exact minimum-weight search. A physical feedback experiment would also need measurement transport and a controller that applies or records that correction.
 
 ```mermaid
 flowchart LR

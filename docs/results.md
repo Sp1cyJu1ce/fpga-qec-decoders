@@ -71,9 +71,9 @@ The distance-49 3D core stores complete finite volumes in UltraRAM. Its 30,438,8
 
 [Internal timing CSV](../results/native_timing.csv)
 
-## Global correction on a small patch
+## Global correction after the CNN
 
-The [FPGA cleanup study](distance-three-cleanup.md) starts with a complete residual syndrome and ends when both correction masks are available. It compares a lookup with circuits that calculate their answer at run time. The guide also gives the extra cycles spent reading the CNN's decisions and forming the residual in a connected distance-three design. The [CPU cleanup measurements](../results/cleanup_latency.csv) time software calls on stored inputs.
+The [FPGA cleanup study](distance-three-cleanup.md) starts with a complete residual syndrome and ends when both correction masks are available. It compares a lookup with circuits that calculate their answer at run time. The guide also gives the extra cycles spent reading the CNN's decisions and forming the residual in a connected distance-three design. The [connected CNN and HDRG experiment](scalable-cleanup.md) measures the time from the last local prediction to the final correction at ten distances through 33. The [CPU cleanup measurements](../results/cleanup_latency.csv) time software calls on stored inputs.
 
 ## What these results do not claim
 

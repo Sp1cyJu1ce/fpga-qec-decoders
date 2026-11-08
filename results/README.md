@@ -15,6 +15,9 @@ These CSVs contain selected thesis results. They describe different timing bound
 | [decoder_quality_3d.csv](decoder_quality_3d.csv) | The corresponding finite-memory comparison at four distances, with X and Z memories kept separate. |
 | [pruning_complete_decoding.csv](pruning_complete_decoding.csv) | Saved complete-decoding outcomes after pruning floating-point weights, at distances 9, 17 and 33. |
 | [pass_selection.csv](pass_selection.csv) | Pass counts chosen on separate tuning trials, including the option to use global decoding alone. |
+| [cnn_hdrg_frames.csv](cnn_hdrg_frames.csv) | Connected RTL, from the last CNN prediction through readback, HDRG and the final correction register. |
+| [hdrg_stream_distances.csv](hdrg_stream_distances.csv) | Standalone cluster-search clocks for 4,951 joint syndromes at ten distances. |
+| [hdrg_stream_routes.csv](hdrg_stream_routes.csv) | Internal implementation timing and resources for the standalone HDRG hardware. |
 | [cleanup_latency.csv](cleanup_latency.csv) | CPU cleanup times before and after one integer CNN pass, using the same stored inputs. |
 | [ibm_final_readout.csv](ibm_final_readout.csv) | Complete-decoder outcomes on the 82 IBM final-measurement conditions, without raw measurements or account metadata. |
 

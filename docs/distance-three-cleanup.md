@@ -1,5 +1,7 @@
 # Global cleanup on an FPGA
 
+For the connected CNN and row-scanning HDRG at distances through 33, see [Cleanup on larger patches](scalable-cleanup.md).
+
 A CNN proposes corrections using a local neighbourhood. To finish the patch, we have to account for those proposals and correct any checks that are still fired. These examples use an unrotated 2D patch with perfect check measurements. The inputs are separate X- and Z-check components, and the outputs are two correction masks in data-qubit raster order.
 
 ## How long does cleanup take?

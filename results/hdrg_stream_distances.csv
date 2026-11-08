@@ -1,0 +1,11 @@
+distance,records,minimum_cycles,median_cycles,maximum_cycles,p13_trials,p13_min_cycles,p13_max_cycles,scope
+3,4096,3,31.0,47,0,,,all joint syndromes
+5,95,5,56.0,170,12,22,111,selected joint syndromes
+7,95,7,107.0,397,12,78,177,selected joint syndromes
+9,95,9,216.0,752,12,110,406,selected joint syndromes
+13,95,13,495.0,1942,12,362,720,selected joint syndromes
+17,95,17,954.0,3932,12,733,1687,selected joint syndromes
+21,95,21,1393.0,6914,12,1133,2064,selected joint syndromes
+25,95,25,2129.0,11080,12,1927,3381,selected joint syndromes
+29,95,29,2965.0,16622,12,2676,4134,selected joint syndromes
+33,95,33,4275.0,23732,12,3723,6423,selected joint syndromes

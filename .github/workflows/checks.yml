@@ -35,3 +35,7 @@ jobs:
           python scripts/check_hdrg_online.py --distance 5 --simulator iverilog
       - name: Exercise the CNN and correction lookup together
         run: python scripts/check_hybrid_d3.py --frames 4 --simulator iverilog
+      - name: Check the larger-patch HDRG engine and its CNN input
+        run: |
+          python scripts/check_hdrg_stream.py --distance 7 --samples 1 --simulator iverilog
+          python scripts/check_hybrid_hdrg.py --distance 3 --samples-per-rate 1 --simulator iverilog
