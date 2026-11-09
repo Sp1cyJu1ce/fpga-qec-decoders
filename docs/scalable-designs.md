@@ -102,12 +102,12 @@ to the installation containing `verilator-config.cmake`; CMake can also find it
 through its usual search paths or the `VERILATOR_ROOT` environment variable.
 `--output` selects a new output directory and never overwrites an existing run.
 
-These launch paths were checked on Windows. The CMake build uses the generated
-precompiled-header layout from Verilator 5.052 to reduce compilation time.
-The scripts avoid host-specific
-paths, but a Linux or macOS build has not been independently checked. Use the
-Verilator path for the distributed testbench; its Icarus execution did not
-complete during the bounded packaging check.
+The resident and distributed Verilator/CMake builds have been checked on Windows.
+They use the precompiled-header layout from Verilator 5.052. The Ubuntu CI job
+runs the Arty 2D example and the cleanup checks with Icarus. The resident and
+distributed Verilator builds still need checking on Linux and macOS. Use
+Verilator for the distributed testbench. Its Icarus run did not finish within
+the time allowed for the check.
 
 ## Fixed arithmetic and coefficients
 

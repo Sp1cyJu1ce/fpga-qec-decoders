@@ -110,4 +110,4 @@ The neural models build on work by Spiro Gicev, Lloyd C. L. Hollenberg and Muham
 
 **Author:** Mohit Garg, University of Melbourne.
 
-**Supervisors:** Dr. Lloyd C. L. Hollenberg, Dr. Rajkumar Buyya and Dr Spiro Gicev.
+**Supervisors:** Dr Lloyd C. L. Hollenberg, Dr Rajkumar Buyya and Dr Spiro Gicev.

@@ -25,7 +25,9 @@ Every one of the 8,192 input/mode combinations reproduced the software mask. The
 
 ### Calculating a correction
 
-The exact search chooses seven of the thirteen mask bits. The six parity checks determine the remaining bits. It evaluates eight of the resulting 128 masks each clock, keeping the lightest. Both components run in parallel. The first result takes 21 clocks and a new pair of syndromes can start every 16 clocks. This solves the uniform minimum-weight objective by enumeration. PyMatching implements blossom and can select another path in a tie. All 4,096 joint inputs gave a minimum-weight correction. The returned path differed from PyMatching on 9 of 64 X inputs and 13 of 64 Z inputs. Either choice clears the checks, but tied paths can differ by a logical operator.
+The exact search chooses seven of the thirteen mask bits. The six parity checks determine the remaining bits. It evaluates eight of the resulting 128 masks each clock, keeping the lightest. Both components run in parallel. The first result takes 21 clocks and a new pair of syndromes can start every 16 clocks. This solves the uniform minimum-weight objective by enumeration. PyMatching implements blossom and can select another path in a tie. All 4,096 joint inputs gave a minimum-weight correction.
+
+Of the 64 inputs per component, the hardware chose a different correction mask from PyMatching on nine X inputs and thirteen Z inputs. Both masks cleared the checks and had the same weight. The two choices had different logical parity in six of those X cases and nine of those Z cases.
 
 The HDRG engine seeds a cluster from a fired check, grows it to its neighbours and chooses paths to neutralise it. An odd cluster that cannot yet reach a boundary waits for the next radius. Its completion time depends on the input. The two components run independently and the output becomes valid when both finish. A new record can start at the following rising edge.
 

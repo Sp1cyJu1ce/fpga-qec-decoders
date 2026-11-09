@@ -1,6 +1,8 @@
 cff-version: 1.2.0
 message: "Please cite this implementation and the original neural-model papers listed in ATTRIBUTION.md."
 type: software
+version: "thesis-2026-11-09"
+date-released: 2026-11-09
 title: "FPGA neural decoders for surface-code quantum error correction"
 authors:
   - family-names: Garg
