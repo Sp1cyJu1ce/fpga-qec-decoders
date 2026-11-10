@@ -108,7 +108,10 @@ def main():
     parser.add_argument("--frames", type=int, default=3)
     parser.add_argument("--seed", type=int, default=20261102)
     parser.add_argument("--tool-dir", type=Path, help="Directory containing iverilog and vvp")
-    parser.add_argument("--timeout-seconds", type=int, default=600)
+    parser.add_argument(
+        "--timeout-seconds", type=int, default=1800,
+        help="time limit for each compile or simulation in seconds (default: %(default)s)",
+    )
     parser.add_argument("--output", type=Path, help="New directory; existing runs are never overwritten")
     args = parser.parse_args()
     if args.frames < 1 or args.timeout_seconds < 1 or args.seed < 0:

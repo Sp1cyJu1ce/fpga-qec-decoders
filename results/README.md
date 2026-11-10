@@ -16,6 +16,7 @@ These CSVs contain selected thesis results. They describe different timing bound
 | [pruning_complete_decoding.csv](pruning_complete_decoding.csv) | Saved complete-decoding outcomes after pruning floating-point weights, at distances 9, 17 and 33. |
 | [pass_selection.csv](pass_selection.csv) | Pass counts chosen on separate tuning trials, including the option to use global decoding alone. |
 | [cnn_hdrg_frames.csv](cnn_hdrg_frames.csv) | Connected CNN and HDRG at ten distances, plus the original 32 paired distance-33 frames (seed 20261109). |
+| [resident_hdrg_d33_frames.csv](resident_hdrg_d33_frames.csv) | Streamed CNN plus HDRG from preloaded input to both correction masks. Two 32-frame samples and 20 controls. The serial-read column is projected. [Reproduction commands](../docs/scalable-cleanup.md). |
 | [independent_cleanup_d33_frames.csv](independent_cleanup_d33_frames.csv) | All 32 fresh frames from Appendix B.8 (seed 405731), with standalone XSim counts for the original checks and the CNN residual. |
 | [hdrg_stream_distances.csv](hdrg_stream_distances.csv) | Standalone cluster-search clocks for 4,951 joint syndromes at ten distances. |
 | [cnn_hdrg_route.csv](cnn_hdrg_route.csv) | Internal VU13P timing and resources for the complete distance-33 CNN, readback, residual and both HDRG engines. |

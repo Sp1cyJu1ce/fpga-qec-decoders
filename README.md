@@ -102,11 +102,13 @@ The resident and distributed designs reuse some module names for different inter
 
 More parallel workers help when there is enough communication capacity to feed them. With a fixed total bandwidth, extra workers can exchange so much overlapping data that completion becomes slower. Memory layout, arithmetic, clock timing and communication therefore have to be considered together.
 
-At distance 33, HDRG found a correction faster after the CNN reduced the number of fired checks. The CNN took longer to run than the search time it saved. The [per-frame results](results/independent_cleanup_d33_frames.csv) give the original search time, the residual search time and the time for the complete loaded frame.
+At distance 33, the CNN shortened the cluster search on both 32-frame samples at 13% error probability. In the banked design, running the CNN and reading back its predictions took longer than the search time saved. A faster worker passed predictions directly to cleanup and finished ahead of HDRG alone on all 64 frames in RTL simulation. The [cleanup guide](docs/scalable-cleanup.md) explains which clocks were counted and compares the [individual frames](results/resident_hdrg_d33_frames.csv).
 
 ## Attribution and citation
 
 The neural models build on work by Spiro Gicev, Lloyd C. L. Hollenberg and Muhammad Usman. See [ATTRIBUTION.md](ATTRIBUTION.md) for the papers and a description of the parameter exports. Please cite the original model papers as well as this implementation where relevant. GitHub's citation menu uses [CITATION.cff](CITATION.cff).
+
+The [thesis snapshot](https://github.com/Sp1cyJu1ce/fpga-qec-decoders/tree/thesis-2026-11-11) contains the sources and results cited in the manuscript. The tag identifies that version if the default branch changes.
 
 **Author:** Mohit Garg, University of Melbourne.
 

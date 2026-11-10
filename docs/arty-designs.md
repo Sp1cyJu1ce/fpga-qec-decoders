@@ -28,7 +28,7 @@ The input has four binary channels on a `(2d-1)` by `(2d-1)` map, surrounded by 
 
 The hidden layers retain 11-bit and 21-bit nonnegative activations. Raw sums use 16, 24 and 36 bits. The last layer writes two predictions per map location using `logit > 0`. These are the integer model's local outputs, not a complete logical-error correction by themselves.
 
-Each layer has its own issue counter. A consumer waits until the preceding layer has written every location needed for its next output. Computation can therefore overlap across layers without reading unwritten data.
+Each layer has its own issue counter. A consumer waits until the preceding layer has written every location needed for its next output. Computation can therefore overlap across layers without reading unwritten data. At distance three, all 25 positions are available before the nominal 31-position lead. Each layer waits for the preceding layer to finish, giving 1,671 clocks for the core with 11, 4 and 6 lanes.
 
 ![Cycle formula divided into lead-in, middle sweep, drain and pipeline terms](assets/cycle-budget.png)
 

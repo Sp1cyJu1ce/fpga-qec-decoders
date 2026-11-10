@@ -113,6 +113,10 @@ def main():
     )
     parser.add_argument("--seed", type=int, default=330913)
     parser.add_argument(
+        "--core", choices=["banked", "resident"], default="banked",
+        help="Use the banked CNN or the three-lane resident CNN with streamed predictions",
+    )
+    parser.add_argument(
         "--simulator", choices=["verilator", "xsim", "iverilog"], default="verilator"
     )
     parser.add_argument("--cmake", default="cmake")
@@ -131,6 +135,8 @@ def main():
         parser.error(
             "a single-rate run needs at least one sample and a probability in [0,1]"
         )
+    if args.core == "resident" and args.simulator != "verilator":
+        parser.error("the resident example uses the Verilator build")
     d = args.distance
     out = ROOT / "build" / f"hybrid_hdrg_d{d}_{time.time_ns()}"
     out.mkdir(parents=True)
@@ -150,6 +156,7 @@ def main():
                 "-B",
                 str(build),
                 f"-DDISTANCE={d}",
+                f"-DCNN_CORE={args.core}",
                 "-DCMAKE_BUILD_TYPE=Release",
             ],
             out,
@@ -252,6 +259,7 @@ def main():
                 "noise_rate": args.noise_rate,
                 "samples_per_rate": args.samples_per_rate,
                 "simulator": args.simulator,
+                "core": args.core,
                 "frames": len(cases),
             },
             indent=2,

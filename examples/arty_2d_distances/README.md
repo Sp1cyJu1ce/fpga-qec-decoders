@@ -6,7 +6,7 @@ Run from the repository root with NumPy and Icarus Verilog installed:
 python scripts/simulate_distances.py
 ```
 
-The default run checks three successive frames at each of distances 5, 9, 17 and 33. It generates reproducible sparse and dense syndrome inputs, evaluates the fixed integer model with NumPy, and compares every two-bit prediction read from the RTL. There is no reset between frames at a given distance. Results, generated inputs and logs go into a new directory under `build`. Use `--distances 5 9` for a shorter run, or `--tool-dir PATH` when Icarus is not on `PATH`.
+The default run checks three successive frames at each of distances 5, 9, 17 and 33. It generates reproducible sparse and dense syndrome inputs, evaluates the fixed integer model with NumPy, and compares every two-bit prediction read from the RTL. There is no reset between frames at a given distance. Results, generated inputs and logs go into a new directory under `build`. Use `--distances 5 9` for a shorter run, or `--tool-dir PATH` when Icarus is not on `PATH`. In one Linux run with Icarus 12.0, the four simulations took about 13 minutes in total, including about nine minutes at distance 33. The default time limit is 30 minutes per compile or simulation.
 
 | Distance | Lanes in layers 1 / 2 / 3 | Expected core clocks |
 |---|---|---|

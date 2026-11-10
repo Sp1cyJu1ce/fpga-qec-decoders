@@ -25,7 +25,22 @@ For each frame I ran HDRG on the original checks, then on the residual left by t
 
 The original-check and residual columns time the HDRG search. The last two columns also count readback and the final register. Times use the 100 MHz clock met by the routed distance-33 design. The median of 32 integer counts can fall halfway between two clocks.
 
-On every frame in both samples the search finished sooner after the CNN. The CNN itself took 150,369 clocks per frame, so direct HDRG still returned a complete correction sooner on every input. The independent run also checked the residual search in a second simulator. Vivado XSim reproduced the search time on each of the 32 residuals, and both simulators agreed with the software correction masks. The [decoder-quality experiments](quantum-experiments.md) test how often the correction succeeds.
+On every frame in both samples the search finished sooner after the CNN. The banked CNN took 150,369 clocks per frame, so direct HDRG still returned a complete correction sooner on every input. The independent run also checked the residual search in a second simulator. Vivado XSim reproduced the search time on each of the 32 residuals, and both simulators agreed with the software correction masks. The [decoder-quality experiments](quantum-experiments.md) test how often the correction succeeds.
+
+## Capturing predictions during inference
+
+The three-lane resident CNN writes each local mask bit as it computes the prediction. Once the last site is ready, the two HDRG engines can start without reading the predictions back from memory. At distance 33 the CNN takes 2,180 clocks, handing the residual to HDRG takes two and returning the combined mask takes one. Search time varies with the residual.
+
+On the Chapter 8 sample the median from accepting a preloaded frame to returning both correction masks was **3,346 clocks**, compared with **4,746** for HDRG alone. Keeping serial readback with the same faster worker would give a projected median of 5,459 clocks. On the second sample the observed medians were 3,467.5 and 4,658 clocks. The streamed design finished first on all 64 frames at 13% error probability and on 9 of 20 additional test inputs. For the empty input it took 2,216 clocks and HDRG alone took 33. The complete streamed design was tested in RTL simulation. The 100 MHz timing result on the VP1902 applies to the resident CNN alone.
+
+The [84 frame records](../results/resident_hdrg_d33_frames.csv) identify the sample and seed. The testbench checks every local mask, the remaining checks, the returned corrections, and recovery from a reset during inference or cleanup. To repeat the two noisy samples, use the same build directory for both commands:
+
+```sh
+python scripts/check_hybrid_hdrg.py --core resident --distance 33 --noise-rate 0.13 --samples-per-rate 32 --seed 20261109 --build-dir build/resident_hdrg_d33
+python scripts/check_hybrid_hdrg.py --core resident --distance 33 --noise-rate 0.13 --samples-per-rate 32 --seed 405731 --build-dir build/resident_hdrg_d33
+```
+
+For the remaining 20 records, use the same command with seed 330913 and four samples per rate, omitting `--noise-rate`. Each run prints the directory containing its cycle counts.
 
 ## Distance sweep and routed clock
 
